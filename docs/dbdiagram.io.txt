@@ -1,0 +1,59 @@
+
+// Creating tables
+Table client {
+  client_id SERIAL [pk, increment] // auto-increment
+  fname varchar(32)
+  lname varchar(32)
+  city varchar(32)
+  street varchar(32)
+  street_nr varchar(32)
+  postcode char(10)
+ // room int
+  email varchar(32)
+  phone varchar(32)
+}
+
+Table room {
+  room_id SERIAL [pk, increment]
+  category_id int [ref: - room_category.category_id]
+  status_id int [ref: - room_status.status_id]
+  capacity int
+  extra_beds int
+  for_kids boolean
+  room_nr int
+}
+
+Table room_category{
+  category_id SERIAL [pk]
+  category varchar(32)
+  price_for_person NUMERIC(7,2)
+}
+
+Table room_status {
+  status_id SERIAL [pk]
+  status varchar(32)
+}
+
+Table reservation {
+  reservation_id SERIAL [pk]
+  room_id int [ref: > room.room_id]
+  cleint_id int [ref: > client.client_id]
+  payment_id int [ref: - payment.payment_id]
+  adults int
+  children int
+  check_in date 
+  check_out date
+  date_placed date
+}
+
+Table payment {
+  payment_id SERIAL [pk]
+  already_paid numeric(7,2)
+  total numeric(7,2)
+}
+
+Table logindata {
+  login_id SERIAL [pk]
+  login varchar(32)
+  password varchar(32)
+}
