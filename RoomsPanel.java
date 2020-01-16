@@ -358,23 +358,23 @@ class RoomsPanel extends JPanel {
             switch(chosen)
             {
                 case 0:
-                    select = MenuPanel.getDb().prepareStatement("SELECT rc.category, rs.status, r.capacity, r.extra_beds, r.for_kids, r.room_nr FROM (room r INNER JOIN room_category rc ON r.category_id=rc.category_id ) INNER JOIN room_status rs ON r.status_id=rs.status_id  ORDER BY r.category_id");
+                    select = MenuPanel.getDb().prepareStatement("select * FROM showRoomsWithDesc ORDER BY category");
                     result = select.executeQuery();
                     break;
                 case 1:
-                    select = MenuPanel.getDb().prepareStatement("SELECT rc.category, rs.status, r.capacity, r.extra_beds, r.for_kids, r.room_nr FROM (room r INNER JOIN room_category rc ON r.category_id=rc.category_id ) INNER JOIN room_status rs ON r.status_id=rs.status_id  ORDER BY r.status_id");
+                    select = MenuPanel.getDb().prepareStatement("select * FROM showRoomsWithDesc ORDER BY status");
                     result = select.executeQuery();
                     break;
                 case 2:
-                    select = MenuPanel.getDb().prepareStatement("SELECT rc.category, rs.status, r.capacity, r.extra_beds, r.for_kids, r.room_nr FROM (room r INNER JOIN room_category rc ON r.category_id=rc.category_id ) INNER JOIN room_status rs ON r.status_id=rs.status_id  ORDER BY r.capacity");
+                    select = MenuPanel.getDb().prepareStatement("select * FROM showRoomsWithDesc ORDER BY capacity");
                     result = select.executeQuery();
                     break;
                 case 3:
-                    select = MenuPanel.getDb().prepareStatement("SELECT rc.category, rs.status, r.capacity, r.extra_beds, r.for_kids, r.room_nr FROM (room r INNER JOIN room_category rc ON r.category_id=rc.category_id ) INNER JOIN room_status rs ON r.status_id=rs.status_id  ORDER BY r.extra_beds");
+                    select = MenuPanel.getDb().prepareStatement("select * FROM showRoomsWithDesc ORDER BY extra_beds");
                     result = select.executeQuery();
                     break;
                 case 4:
-                    select = MenuPanel.getDb().prepareStatement("SELECT rc.category, rs.status, r.capacity, r.extra_beds, r.for_kids, r.room_nr FROM (room r INNER JOIN room_category rc ON r.category_id=rc.category_id ) INNER JOIN room_status rs ON r.status_id=rs.status_id  ORDER BY r.room_nr");
+                    select = MenuPanel.getDb().prepareStatement("select * FROM showRoomsWithDesc ORDER BY room_nr");
                     result = select.executeQuery();
                     break;
                 default: break;

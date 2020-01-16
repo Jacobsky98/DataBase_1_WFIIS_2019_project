@@ -319,7 +319,7 @@ class ClientsPanel extends JPanel {
             ResultSet result = null;
             PreparedStatement select = null;
             try{
-                select = MenuPanel.getDb().prepareStatement("SELECT cl.client_id, cl.fname, cl.lname, cl.city, cl.street, cl.street_nr, cl.postcode, cl.phone, cl.email, (SELECT count(*) FROM reservation r where r.client_id=cl.client_id) as rescount FROM client cl ORDER BY rescount DESC");
+                select = MenuPanel.getDb().prepareStatement("select * from showclientswithreservationscount");
                 result = select.executeQuery();
 
                 while (result.next()) {
@@ -359,27 +359,27 @@ class ClientsPanel extends JPanel {
             switch(chosen)
             {
                 case 0:
-                    select = MenuPanel.getDb().prepareStatement("SELECT cl.client_id, cl.fname, cl.lname, cl.city, cl.street, cl.street_nr, cl.postcode, cl.phone, cl.email, (SELECT count(*) FROM reservation r where r.client_id=cl.client_id) as rescount FROM client cl ORDER BY cl.client_id");
+                    select = MenuPanel.getDb().prepareStatement("select * from showclientswithreservationscount ORDER BY client_id");
                     result = select.executeQuery();
                     break;
                 case 1:
-                    select = MenuPanel.getDb().prepareStatement("SELECT cl.client_id, cl.fname, cl.lname, cl.city, cl.street, cl.street_nr, cl.postcode, cl.phone, cl.email, (SELECT count(*) FROM reservation r where r.client_id=cl.client_id) as rescount FROM client cl ORDER BY cl.fname");
+                    select = MenuPanel.getDb().prepareStatement("select * from showclientswithreservationscount ORDER BY fname");
                     result = select.executeQuery();
                     break;
                 case 2:
-                    select = MenuPanel.getDb().prepareStatement("SELECT cl.client_id, cl.fname, cl.lname, cl.city, cl.street, cl.street_nr, cl.postcode, cl.phone, cl.email, (SELECT count(*) FROM reservation r where r.client_id=cl.client_id) as rescount FROM client cl ORDER BY cl.lname");
+                    select = MenuPanel.getDb().prepareStatement("select * from showclientswithreservationscount ORDER BY lname");
                     result = select.executeQuery();
                     break;
                 case 3:
-                    select = MenuPanel.getDb().prepareStatement("SELECT cl.client_id, cl.fname, cl.lname, cl.city, cl.street, cl.street_nr, cl.postcode, cl.phone, cl.email, (SELECT count(*) FROM reservation r where r.client_id=cl.client_id) as rescount FROM client cl ORDER BY cl.city");
+                    select = MenuPanel.getDb().prepareStatement("select * from showclientswithreservationscount ORDER BY city");
                     result = select.executeQuery();
                     break;
                 case 4:
-                    select = MenuPanel.getDb().prepareStatement("SELECT cl.client_id, cl.fname, cl.lname, cl.city, cl.street, cl.street_nr, cl.postcode, cl.phone, cl.email, (SELECT count(*) FROM reservation r where r.client_id=cl.client_id) as rescount FROM client cl ORDER BY cl.postcode");
+                    select = MenuPanel.getDb().prepareStatement("select * from showclientswithreservationscount ORDER BY postcode");
                     result = select.executeQuery();
                     break;
                 case 5:
-                    select = MenuPanel.getDb().prepareStatement("SELECT cl.client_id, cl.fname, cl.lname, cl.city, cl.street, cl.street_nr, cl.postcode, cl.phone, cl.email, (SELECT count(*) FROM reservation r where r.client_id=cl.client_id) as rescount FROM client cl ORDER BY rescount DESC");
+                    select = MenuPanel.getDb().prepareStatement("select * from showclientswithreservationscount ORDER BY rescount DESC");
                     result = select.executeQuery();
                     break;
                 default: break;

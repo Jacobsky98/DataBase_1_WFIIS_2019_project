@@ -13,6 +13,9 @@ class MenuPanel extends JPanel {
     private JButton reservationButton;
     private JButton roomsButton;
     private JButton clientsButton;
+    private JButton registerUser;
+    private JButton logoutUser;
+    private JButton statistics;
     private JPanel contentPane;
     private static Connection db = null;
 
@@ -30,6 +33,9 @@ class MenuPanel extends JPanel {
         reservationButton = new JButton ("Rezerwacja");
         roomsButton = new JButton ("Pokoje");
         clientsButton = new JButton ("Goście");
+        registerUser = new JButton ("Nowy użytkownik");
+        logoutUser = new JButton ("Wyloguj");
+        statistics = new JButton ("Statystyki");
 
         //adjust size and set layout
         setPreferredSize (new Dimension(800, 640));
@@ -45,6 +51,10 @@ class MenuPanel extends JPanel {
         roomsButton.setSize(600, 120);
         clientsButton.setLocation(100, 420);
         clientsButton.setSize(600, 120);
+        registerUser.setBounds(15, 45, 370,35);
+        logoutUser.setBounds(415, 45, 370,35);
+        statistics.setBounds(100, 600, 600,30);
+
         reservationButton.addActionListener( new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -75,9 +85,54 @@ class MenuPanel extends JPanel {
             }
         });
 
+        registerUser.addActionListener( new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+            }
+        });
+
+
+        statistics.addActionListener( new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                StatsPanel.fillRoomsTable();
+                StatsPanel.fillClientsTable();
+                CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+            }
+        });
+
+
+        logoutUser.addActionListener( new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+                cardLayout.first(contentPane);
+            }
+        });
+
         add (reservationButton);
         add (roomsButton);
         add (clientsButton);
+        add (registerUser);
+        add (logoutUser);
+        add (statistics);
     }
     public void connectToDb()
     {

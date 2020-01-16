@@ -6,9 +6,10 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 
-class LoginPanel extends JPanel {
+class RegisterPanel extends JPanel {
     private JLabel opis;
-    private JButton loginButton = new JButton ("Zaloguj");
+    private JButton loginButton = new JButton ("Zarejestruj");
+    private JButton menuButton;
     private JLabel loginDesc;
     private JTextField loginField;
     private JLabel passwordDesc;
@@ -25,10 +26,10 @@ class LoginPanel extends JPanel {
         return db;
     }
 
-    public LoginPanel(JPanel panel) {
+    public RegisterPanel(JPanel panel) {
         connectToDb();
         contentPane = panel;
-        opis = new JLabel("Zaloguj się, aby kontynuować", SwingConstants.CENTER);
+        opis = new JLabel("Rejestracja nowego użytkownika", SwingConstants.CENTER);
         opis.setFont(new Font("Serif", Font.PLAIN, 18));
         opis.setBounds(15, 10, 770, 60);
         add(opis);
@@ -52,7 +53,7 @@ class LoginPanel extends JPanel {
         passwordField.setEchoChar('*');
         add(passwordField);
 
-        operationStatus.setBounds(25, 600, 770, 40);
+        operationStatus.setBounds(25, 550, 770, 40);
         operationStatus.setFont(new Font("Serif", Font.PLAIN, 15));
         add(operationStatus);
 
@@ -65,37 +66,49 @@ class LoginPanel extends JPanel {
                 if(loginData.length() >= 1)
                 {
                     try {
-                        System.out.println(getDb());
-                        PreparedStatement selectLog = getDb().prepareStatement("SELECT password FROM loginData WHERE login='"+String.valueOf(loginField.getText())+"'");
-                        ResultSet resultLog = selectLog.executeQuery();
-                        while (resultLog.next()) {
-                            if(resultLog.getString("password").equals(String.valueOf(passwordField.getPassword()))) {
-                                resultLog.close();
-                                selectLog.close();
-                                logIn = true;
-                                loginField.setText("");
-                                passwordField.setText("");
-                                break;
-                            }
-                        }
-                    }catch(Exception ser){
+                        PreparedStatement insertUser = MenuPanel.getDb().prepareStatement("INSERT INTO loginData (login, password) VALUES (?, ?)");
+
+                        insertUser.setString(1, loginField.getText());
+                        insertUser.setString(2, String.valueOf(passwordField.getPassword()));
+
+                        insertUser.executeUpdate();
+                        insertUser.close();
+                        logIn = true;
+
+                    } catch (Exception ser) {
+                        System.out.println(ser.getMessage());
                         ser.printStackTrace();
                     }
+
                     if (logIn) {
-                        CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-                        cardLayout.next(contentPane);
+    //                    CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+    //                    cardLayout.first(contentPane);
+                        operationStatus.setText("Zarejestrowano uzytkownika " + String.valueOf(loginField.getText()));
                         loginField.setText("");
                         passwordField.setText("");
                         logIn = false;
-                    }
-                    else{
-                        operationStatus.setText("Niepoprawne dane logowania. Domyślne (login: admin, hasło: admin)");
+                    } else {
+                        operationStatus.setText("Niepoprawne dane. Spróbuj jeszcze raz");
                     }
                 }
             }
         });
 
         add (loginButton);
+
+        menuButton = new JButton("Powrót do menu");
+        menuButton.setLocation(15, 585);
+        menuButton.setSize(770, 40);
+        menuButton.addActionListener( new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+                cardLayout.first(contentPane);
+                cardLayout.next(contentPane);
+            }
+        });
+        add(menuButton);
     }
 
     public void connectToDb()

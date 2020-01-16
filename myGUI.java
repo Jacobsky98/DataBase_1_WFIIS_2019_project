@@ -11,6 +11,8 @@ public class myGUI {
     private ReservationPanel reservationPanel;
     private RoomsPanel roomsPanel;
     private ClientsPanel clientsPanel;
+    private RegisterPanel registerPanel;
+    private StatsPanel statsPanel;
     private static ShowReservation showReseravtion = null;
     private static ShowReservationClient showReseravtionClient = null;
 
@@ -30,6 +32,8 @@ public class myGUI {
         clientsPanel = new ClientsPanel(contentPane);
         showReseravtion = new ShowReservation(contentPane);
         showReseravtionClient = new ShowReservationClient(contentPane);
+        registerPanel = new RegisterPanel(contentPane);
+        statsPanel = new StatsPanel(contentPane);
         contentPane.add(loginPanel, "Hotel - panel logowania");
         contentPane.add(menuPanel, "Hotel - menu rezerwacji");
         contentPane.add(reservationPanel, "Hotel - rezerwacja");
@@ -37,6 +41,8 @@ public class myGUI {
         contentPane.add(clientsPanel, "Hotel - goscie");
         contentPane.add(showReseravtion, "Hotel - rezerwacje pokoju");
         contentPane.add(showReseravtionClient, "Hotel - rezerwacje pokoju danego klienta");
+        contentPane.add(registerPanel, "Hotel - rejestracja nowego użytkownika sytemu");
+        contentPane.add(statsPanel, "Hotel - statystyki");
         menu.setContentPane(contentPane);
         menu.pack();
         menu.setLocationByPlatform(true);

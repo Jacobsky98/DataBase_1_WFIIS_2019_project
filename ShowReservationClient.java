@@ -251,23 +251,23 @@ class ShowReservationClient extends JPanel {
             switch(chosen)
             {
                 case 0:
-                    select = MenuPanel.getDb().prepareStatement("SELECT r.reservation_id, cl.fname, cl.lname, cl.phone, r.adults, r.children, r.check_in, r.check_out, r.date_placed, p.already_paid, p.total-p.already_paid as to_pay, room.room_nr, r.payment_id  FROM ((reservation r INNER JOIN client cl ON cl.client_id=r.client_id ) INNER JOIN payment p ON p.payment_id=r.payment_id), room WHERE (room.room_id=r.room_id AND r.client_id="+client_id+") ORDER BY r.check_in DESC");
+                    select = MenuPanel.getDb().prepareStatement("SELECT * FROM showReservationClient("+client_id+") ORDER BY check_in DESC");
                     resultRes = select.executeQuery();
                     break;
                 case 1:
-                    select = MenuPanel.getDb().prepareStatement("SELECT r.reservation_id, cl.fname, cl.lname, cl.phone, r.adults, r.children, r.check_in, r.check_out, r.date_placed, p.already_paid, p.total-p.already_paid as to_pay, room.room_nr, r.payment_id  FROM ((reservation r INNER JOIN client cl ON cl.client_id=r.client_id ) INNER JOIN payment p ON p.payment_id=r.payment_id), room WHERE (room.room_id=r.room_id AND r.client_id="+client_id+") ORDER BY r.check_out DESC");
+                    select = MenuPanel.getDb().prepareStatement("SELECT * FROM showReservationClient("+client_id+") ORDER BY check_out DESC");
                     resultRes = select.executeQuery();
                     break;
                 case 2:
-                    select = MenuPanel.getDb().prepareStatement("SELECT r.reservation_id, cl.fname, cl.lname, cl.phone, r.adults, r.children, r.check_in, r.check_out, r.date_placed, p.already_paid, p.total-p.already_paid as to_pay, room.room_nr, r.payment_id  FROM ((reservation r INNER JOIN client cl ON cl.client_id=r.client_id ) INNER JOIN payment p ON p.payment_id=r.payment_id), room WHERE (room.room_id=r.room_id AND r.client_id="+client_id+") ORDER BY p.total DESC");
+                    select = MenuPanel.getDb().prepareStatement("SELECT * FROM showReservationClient("+client_id+") ORDER BY total DESC");
                     resultRes = select.executeQuery();
                     break;
                 case 3:
-                    select = MenuPanel.getDb().prepareStatement("SELECT r.reservation_id, cl.fname, cl.lname, cl.phone, r.adults, r.children, r.check_in, r.check_out, r.date_placed, p.already_paid, p.total-p.already_paid as to_pay, room.room_nr, r.payment_id  FROM ((reservation r INNER JOIN client cl ON cl.client_id=r.client_id ) INNER JOIN payment p ON p.payment_id=r.payment_id), room WHERE (room.room_id=r.room_id AND r.client_id="+client_id+") ORDER BY to_pay DESC");
+                    select = MenuPanel.getDb().prepareStatement("SELECT * FROM showReservationClient("+client_id+") ORDER BY to_pay DESC");
                     resultRes = select.executeQuery();
                     break;
                 case 4:
-                    select = MenuPanel.getDb().prepareStatement("SELECT r.reservation_id, cl.fname, cl.lname, cl.phone, r.adults, r.children, r.check_in, r.check_out, r.date_placed, p.already_paid, p.total-p.already_paid as to_pay, room.room_nr, r.payment_id  FROM ((reservation r INNER JOIN client cl ON cl.client_id=r.client_id ) INNER JOIN payment p ON p.payment_id=r.payment_id), room WHERE (room.room_id=r.room_id AND r.client_id="+client_id+") ORDER BY room_nr");
+                    select = MenuPanel.getDb().prepareStatement("SELECT * FROM showReservationClient("+client_id+") ORDER BY room_nr");
                     resultRes = select.executeQuery();
                     break;
                 default: break;
