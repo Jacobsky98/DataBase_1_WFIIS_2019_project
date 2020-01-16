@@ -203,8 +203,12 @@ class RoomsPanel extends JPanel {
                 ShowReservation.room_id = Integer.parseInt(String.valueOf(selectRoomNr.getSelectedItem()));
                 ShowReservation.fillRoomsTable();
                 CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-                cardLayout.last(contentPane);
-                cardLayout.previous(contentPane);
+                cardLayout.first(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
             }
         });
 

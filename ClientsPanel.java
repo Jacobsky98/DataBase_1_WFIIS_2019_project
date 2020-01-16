@@ -205,7 +205,14 @@ class ClientsPanel extends JPanel {
                 System.out.println("Wysylam client_id="+Integer.parseInt(String.valueOf(selectClientId.getSelectedItem())));
                 ShowReservationClient.fillRoomsTable();
                 CardLayout cardLayout = (CardLayout) contentPane.getLayout();
-                cardLayout.last(contentPane);
+
+                cardLayout.first(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
             }
         });
 

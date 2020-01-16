@@ -112,7 +112,7 @@ class ShowReservationClient extends JPanel {
             select.close();
         } catch(Exception ser){
             System.out.println("Panel klienta - blad wczytywania tabeli");
-            ser.printStackTrace();
+//            ser.printStackTrace();
             return;
         }
         String [] roomID = new String[roomIdsArray.size()];
@@ -158,7 +158,7 @@ class ShowReservationClient extends JPanel {
 
                     } catch (Exception ser){
                         System.out.println("Panel rezerwacji klienta - blad zapisywania danych do tabeli payment");
-                        ser.printStackTrace();
+//                        ser.printStackTrace();
                     }
                     fillRoomsTable();
                 }else{
@@ -205,13 +205,14 @@ class ShowReservationClient extends JPanel {
                         deleteRes.executeUpdate();
                         deleteRes.close();
                         fillRoomsTable();
+                        MenuPanel.updateRoomsStatus();
 
 
                     }
                 } catch (Exception ser){
                     System.out.println("Panel rezerwacji pokoi klienta - blad usuwania z tabeli");
                     ser.getMessage();
-                    ser.printStackTrace();
+//                    ser.printStackTrace();
                 }
             }
         });
@@ -230,7 +231,7 @@ class ShowReservationClient extends JPanel {
             description.setBounds(35, 10, 300, 25);
             add(description);
         }catch(Exception ser){
-            ser.printStackTrace();
+//            ser.printStackTrace();
         }
 
     }
@@ -314,7 +315,7 @@ class ShowReservationClient extends JPanel {
 
         } catch (Exception ser){
             System.out.println("Rezerwacje klienta - blad wczytywania wierszy tabeli");
-            ser.printStackTrace();
+//            ser.printStackTrace();
         }
 
     }

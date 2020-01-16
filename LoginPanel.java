@@ -54,6 +54,7 @@ class LoginPanel extends JPanel {
 
         operationStatus.setBounds(25, 600, 770, 40);
         operationStatus.setFont(new Font("Serif", Font.PLAIN, 15));
+        operationStatus.setText("Domyślnie (login: admin, hasło: admin)");
         add(operationStatus);
 
 
@@ -62,7 +63,7 @@ class LoginPanel extends JPanel {
         {
             public void actionPerformed(ActionEvent e) {
                 String loginData = loginField.getText();
-                if(loginData.length() >= 1)
+//                if(loginData.length() >= 1)
                 {
                     try {
                         System.out.println(getDb());
@@ -86,10 +87,11 @@ class LoginPanel extends JPanel {
                         cardLayout.next(contentPane);
                         loginField.setText("");
                         passwordField.setText("");
+                        operationStatus.setText("Domyślnie (login: admin, hasło: admin)");
                         logIn = false;
                     }
                     else{
-                        operationStatus.setText("Niepoprawne dane logowania. Domyślne (login: admin, hasło: admin)");
+                        operationStatus.setText("Niepoprawne dane logowania. Domyślnie (login: admin, hasło: admin)");
                     }
                 }
             }

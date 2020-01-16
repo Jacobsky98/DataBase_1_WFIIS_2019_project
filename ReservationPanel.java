@@ -357,6 +357,7 @@ class ReservationPanel extends JPanel {
                         howMuchToPayDesc.setVisible(true);
                         howMuchToPay.setVisible(true);
                         payForReservation.setVisible(true);
+                        MenuPanel.updateRoomsStatus();
                     } catch (Exception ser) {
                         ser.printStackTrace();
                     }

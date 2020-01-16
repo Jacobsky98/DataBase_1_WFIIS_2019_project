@@ -102,7 +102,7 @@ class ShowReservation extends JPanel {
             select.close();
         } catch(Exception ser){
             System.out.println("Panel klienta - blad wczytywania tabeli");
-            ser.printStackTrace();
+//            ser.printStackTrace();
             return;
         }
         String [] roomID = new String[roomIdsArray.size()];
@@ -173,7 +173,7 @@ class ShowReservation extends JPanel {
             description.setBounds(35, 10, 300, 25);
             add(description);
         }catch(Exception ser){
-            ser.printStackTrace();
+//            ser.printStackTrace();
         }
 
     }
@@ -236,7 +236,7 @@ class ShowReservation extends JPanel {
             select.close();
         } catch (Exception ser){
             System.out.println("Panel hisotrii rezerwacji pokoi - blad wczytywania wierszy tabeli");
-            ser.printStackTrace();
+//            ser.printStackTrace();
         }
 
     }

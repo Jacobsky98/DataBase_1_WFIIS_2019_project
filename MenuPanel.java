@@ -3,9 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 
 class MenuPanel extends JPanel {
@@ -16,6 +14,7 @@ class MenuPanel extends JPanel {
     private JButton registerUser;
     private JButton logoutUser;
     private JButton statistics;
+    private JButton cateoryStatusRoomAdd;
     private JPanel contentPane;
     private static Connection db = null;
 
@@ -26,6 +25,7 @@ class MenuPanel extends JPanel {
 
     public MenuPanel(JPanel panel) {
         connectToDb();
+        updateRoomsStatus();
         contentPane = panel;
         opis = new JLabel("Menu zarządzania hotelem", SwingConstants.CENTER);
         opis.setBounds(15, 10, 770, 25);
@@ -36,6 +36,7 @@ class MenuPanel extends JPanel {
         registerUser = new JButton ("Nowy użytkownik");
         logoutUser = new JButton ("Wyloguj");
         statistics = new JButton ("Statystyki");
+        cateoryStatusRoomAdd = new JButton ("Dodaj status, kategorie");
 
         //adjust size and set layout
         setPreferredSize (new Dimension(800, 640));
@@ -53,6 +54,7 @@ class MenuPanel extends JPanel {
         clientsButton.setSize(600, 120);
         registerUser.setBounds(15, 45, 370,35);
         logoutUser.setBounds(415, 45, 370,35);
+        cateoryStatusRoomAdd.setBounds(100, 560, 600, 30);
         statistics.setBounds(100, 600, 600,30);
 
         reservationButton.addActionListener( new ActionListener()
@@ -69,6 +71,7 @@ class MenuPanel extends JPanel {
             public void actionPerformed(ActionEvent e)
             {
                 CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+                myGUI.roomsPanel.fillRoomsTable();
                 cardLayout.next(contentPane);
                 cardLayout.next(contentPane);
             }
@@ -117,6 +120,24 @@ class MenuPanel extends JPanel {
             }
         });
 
+        cateoryStatusRoomAdd.addActionListener( new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                StatsPanel.fillRoomsTable();
+                StatsPanel.fillClientsTable();
+                CardLayout cardLayout = (CardLayout) contentPane.getLayout();
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+                cardLayout.next(contentPane);
+            }
+        });
+
 
         logoutUser.addActionListener( new ActionListener()
         {
@@ -133,6 +154,7 @@ class MenuPanel extends JPanel {
         add (registerUser);
         add (logoutUser);
         add (statistics);
+        add (cateoryStatusRoomAdd);
     }
     public void connectToDb()
     {
@@ -143,6 +165,20 @@ class MenuPanel extends JPanel {
             System.out.println("Brak polaczenia z baza danych, wydruk logu sledzenia i koniec.");
             ser.printStackTrace();
             //System.exit(1);
+        }
+    }
+
+    static public void updateRoomsStatus(){
+        try {
+            PreparedStatement update = MenuPanel.getDb().prepareStatement("UPDATE room SET status_id=1 FROM wolnePokoje WHERE (room.room_id=wolnePokoje.room_id AND room.status_id=2)");
+            update.executeUpdate();
+            update.close();
+            update = MenuPanel.getDb().prepareStatement("UPDATE room SET status_id=2 FROM zajetePokoje WHERE (room.room_id=zajetePokoje.room_id AND room.status_id=1)");
+            update.executeUpdate();
+            update.close();
+        } catch (Exception ser){
+            System.out.println("Panel menu - blad aktualizacji statusow pokojow");
+            ser.printStackTrace();
         }
     }
 }
