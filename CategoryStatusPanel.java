@@ -5,7 +5,9 @@ import java.awt.event.ActionListener;
 
 import java.sql.*;
 
-
+/**
+ * Panel dodawania nowych kategorii i statsów do określania pokoju
+ */
 class CategoryStatusPanel extends JPanel {
     private JLabel opis;
     private JButton menuButton;
@@ -26,12 +28,19 @@ class CategoryStatusPanel extends JPanel {
 
     private static Connection db = null;
 
-
+    /**
+     * Funkcja zwracająca połączenie z bazą danych do operowania na niej
+     * @return - połączenie z bazą danych
+     */
     public static Connection getDb()
     {
         return db;
     }
 
+    /**
+     * Konstrukor panelu dodawania nowych kategorii i statusów. Tworzy wszystkie elementy i przypisuje im domyślne wartości
+     * @param panel - panel, w którym zostanie wyświetlona zawartość
+     */
     public CategoryStatusPanel(JPanel panel) {
         connectToDb();
         contentPane = panel;
@@ -137,6 +146,9 @@ class CategoryStatusPanel extends JPanel {
         add(menuButton);
     }
 
+    /**
+     * Funckja ustanawiająca połączenie z bazą danych
+     */
     public void connectToDb()
     {
         try {
@@ -144,7 +156,7 @@ class CategoryStatusPanel extends JPanel {
                     "u7salamon", "7salamon");
         } catch (SQLException ser) {
             System.out.println("Brak polaczenia z baza danych, wydruk logu sledzenia i koniec.");
-            ser.printStackTrace();
+            //ser.printStackTrace();
             //System.exit(1);
         }
     }

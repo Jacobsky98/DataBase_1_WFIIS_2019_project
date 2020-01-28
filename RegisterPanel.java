@@ -2,10 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.sql.*;
 
-
+/**
+ * Panel rejestracji nowego użytkownika systemu. Jest dostępny tylko po zalogowaniu się istniejącego już użytkownika. Zapobiega to tworzeniu niezautoryzowanych użytkoników.
+ */
 class RegisterPanel extends JPanel {
     private JLabel opis;
     private JButton loginButton = new JButton ("Zarejestruj");
@@ -20,12 +21,19 @@ class RegisterPanel extends JPanel {
     boolean logIn = false;
     private static Connection db = null;
 
-
+    /**
+     *
+     * @return - połączenie z bazą danych
+     */
     public static Connection getDb()
     {
         return db;
     }
 
+    /**
+     * Konstrukor panelu rejestracji nowego użytkownika systemu. Tworzy wszystkie elementy i przypisuje im domyślne wartości
+     * @param panel - panel, w którym zostanie wyświetlona zawartość
+     */
     public RegisterPanel(JPanel panel) {
         connectToDb();
         contentPane = panel;
@@ -111,6 +119,9 @@ class RegisterPanel extends JPanel {
         add(menuButton);
     }
 
+    /**
+     * Tworzy połączenie z bazą danych
+     */
     public void connectToDb()
     {
         try {

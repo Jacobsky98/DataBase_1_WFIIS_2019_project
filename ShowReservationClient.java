@@ -1,6 +1,5 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.transform.Result;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +8,9 @@ import java.text.DecimalFormat;
 import java.util.Vector;
 import java.util.ArrayList;
 
+/**
+ * Panel wyświetlający dane rezerwacje danego klienta. Przejeście do tego panelu jest dostępne z panelu klienta po wybraniu odpowiedniego id klienta
+ */
 class ShowReservationClient extends JPanel {
 
     private JLabel description;
@@ -39,7 +41,10 @@ class ShowReservationClient extends JPanel {
     private JLabel operationStatus = new JLabel();
 
 
-
+    /**
+     * Konstrukor panelu rezerwacji danego klienta. Tworzy wszystkie elementy i przypisuje im domyślne wartości
+     * @param panel - panel, w którym zostanie wyświetlona zawartość
+     */
     public ShowReservationClient(JPanel menuPanel) {
 
         menuButton = new JButton("Powrót do menu");
@@ -237,7 +242,9 @@ class ShowReservationClient extends JPanel {
     }
 
 
-
+    /**
+     * Uzupełnia tablice wyświetlająca wszystkie rezerwacje danego klienta. Umożliwia sortowanie według określonej przez użytkownika kolejności
+     */
     public static void fillRoomsTable()
     {
         System.out.println("Room id to show " + client_id);

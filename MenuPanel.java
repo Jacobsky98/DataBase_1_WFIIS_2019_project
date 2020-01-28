@@ -5,7 +5,9 @@ import java.awt.event.ActionListener;
 
 import java.sql.*;
 
-
+/**
+ * Panel menu do poruszania się po wszystkich panelach aplikacji
+ */
 class MenuPanel extends JPanel {
     private JLabel opis;
     private JButton reservationButton;
@@ -18,11 +20,19 @@ class MenuPanel extends JPanel {
     private JPanel contentPane;
     private static Connection db = null;
 
+    /**
+     *
+     * @return - połączenie z bazą danych
+     */
     public static Connection getDb()
     {
         return db;
     }
 
+    /**
+     * Konstrukor panelu menu. Tworzy wszystkie elementy i przypisuje im domyślne wartości
+     * @param panel - panel, w którym zostanie wyświetlona zawartość
+     */
     public MenuPanel(JPanel panel) {
         connectToDb();
         updateRoomsStatus();
@@ -72,6 +82,7 @@ class MenuPanel extends JPanel {
             {
                 CardLayout cardLayout = (CardLayout) contentPane.getLayout();
                 myGUI.roomsPanel.fillRoomsTable();
+                myGUI.roomsPanel.fillCategoryStatusNumber();
                 cardLayout.next(contentPane);
                 cardLayout.next(contentPane);
             }
@@ -156,6 +167,10 @@ class MenuPanel extends JPanel {
         add (statistics);
         add (cateoryStatusRoomAdd);
     }
+
+    /**
+     * Funkcja ustanawiająca połaczenie z bazą danych
+     */
     public void connectToDb()
     {
         try {
@@ -163,11 +178,14 @@ class MenuPanel extends JPanel {
                     "u7salamon", "7salamon");
         } catch (SQLException ser) {
             System.out.println("Brak polaczenia z baza danych, wydruk logu sledzenia i koniec.");
-            ser.printStackTrace();
+//            ser.printStackTrace();
             //System.exit(1);
         }
     }
 
+    /**
+     * Aktualizuje statusy pokoi w RoomsPanel na podstawie rezerwacji dokonanych w ReservationPanel
+     */
     static public void updateRoomsStatus(){
         try {
             PreparedStatement update = MenuPanel.getDb().prepareStatement("UPDATE room SET status_id=1 FROM wolnePokoje WHERE (room.room_id=wolnePokoje.room_id AND room.status_id=2)");
@@ -178,7 +196,7 @@ class MenuPanel extends JPanel {
             update.close();
         } catch (Exception ser){
             System.out.println("Panel menu - blad aktualizacji statusow pokojow");
-            ser.printStackTrace();
+//            ser.printStackTrace();
         }
     }
 }

@@ -1,9 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
+/**
+ * Klasa główna aplikacji, startuje aplikacje i wywołuje konstruktory wszystkich paneli
+ */
 public class myGUI {
     private JPanel contentPane;
     private MenuPanel menuPanel;
@@ -17,6 +17,9 @@ public class myGUI {
     private static ShowReservation showReseravtion = null;
     private static ShowReservationClient showReseravtionClient = null;
 
+    /**
+     * Tworzy wszystkie panele aplikacji i ich odpowiednią kolejność
+     */
     private void displayMenu()
     {
         JFrame menu = new JFrame("Hotel - Jakub Salamon");

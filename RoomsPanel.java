@@ -1,6 +1,5 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.transform.Result;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +7,9 @@ import java.sql.*;
 import java.util.Vector;
 import java.util.ArrayList;
 
+/**
+ * Panel pokazujący dane wszystkich pokoi. Umożliwia tworzenie nowych pokoi lub modyfikowanie ich danych
+ */
 class RoomsPanel extends JPanel {
 
     private JLabel description;
@@ -41,7 +43,10 @@ class RoomsPanel extends JPanel {
     private JButton showRoomReservations;
 
 
-
+    /**
+     * Konstrukor panelu pokoi. Tworzy wszystkie elementy i przypisuje im domyślne wartości
+     * @param panel - panel, w którym zostanie wyświetlona zawartość
+     */
     public RoomsPanel(JPanel menuPanel) {
 
         menuButton = new JButton("Powrót do menu");
@@ -294,7 +299,7 @@ class RoomsPanel extends JPanel {
 
                 } catch (Exception ser){
                     System.out.println("Panel pokoi - blad zapisywania danych do tabeli room");
-                    ser.printStackTrace();
+//                    ser.printStackTrace();
                 }
             }
         });
@@ -304,6 +309,9 @@ class RoomsPanel extends JPanel {
 
     }
 
+    /**
+     * Uzupełnia pola tekstowe i pole wyboru danymi pokojów, które zostali wybrani do modyfikacji
+     */
     void fillTextFields()
     {
         String cl_idS = String.valueOf(selectRoomNr.getSelectedItem());
@@ -342,13 +350,67 @@ class RoomsPanel extends JPanel {
                 select.close();
             } catch (Exception ser){
                 System.out.println("Panel klienta - blad wczytywania wierszy tabeli");
-                ser.printStackTrace();
+//                ser.printStackTrace();
             }
 
         }
 
     }
 
+    /**
+     * Uzupełnia pole wyboru statusu i kategorii z wszystkich dostępnych dla pokoju.
+     */
+    void fillCategoryStatusNumber(){
+        ArrayList<String> roomCategories = new ArrayList<String>();
+        ArrayList<String> roomStatuses = new ArrayList<String>();
+        ArrayList<String> roomNumbers = new ArrayList<String>();
+        roomNumbers.add("Nowy");
+        try{
+            PreparedStatement select = MenuPanel.getDb().prepareStatement("SELECT category FROM room_category");
+            ResultSet result = select.executeQuery();
+            while(result.next())
+                roomCategories.add(result.getString("category"));
+            result.close();
+            select.close();
+
+            select = MenuPanel.getDb().prepareStatement("SELECT status FROM room_status");
+            result = select.executeQuery();
+            while(result.next())
+                roomStatuses.add(result.getString("status"));
+            result.close();
+            select.close();
+
+            select = MenuPanel.getDb().prepareStatement("SELECT room_nr FROM room");
+            result = select.executeQuery();
+            while(result.next())
+                roomNumbers.add(result.getString("room_nr"));
+            result.close();
+            select.close();
+
+        } catch(Exception ser){
+            System.out.println("Panel pokoi - blad wczytywania tabeli");
+            return;
+        }
+
+        String [] roomCat = new String[roomCategories.size()];
+        roomCategories.toArray(roomCat);
+        String [] roomStat = new String[roomStatuses.size()];
+        roomStatuses.toArray(roomStat);
+        String [] roomNr = new String[roomNumbers.size()];
+        roomNumbers.toArray(roomNr);
+        selectCategory.removeAllItems();
+        selectStatus.removeAllItems();
+        for(String x : roomCat){
+            selectCategory.addItem(x);
+        }
+        for(String x : roomStat){
+            selectStatus.addItem(x);
+        }
+    }
+
+    /**
+     * Uzupełnia tablice wyświetlająca wszystkie dostępne pokoje. Umożliwia sortowanie według określonej przez użytkownika kolejności
+     */
     void fillRoomsTable()
     {
         for (int i = model.getRowCount() - 1; i >= 0; i--) {

@@ -1,6 +1,5 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.transform.Result;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +7,9 @@ import java.sql.*;
 import java.util.Vector;
 import java.util.ArrayList;
 
+/**
+ * Panel wyświetlający dane rezerwacje danego pokoju. Przejeście do tego panelu jest dostępne z panelu klienta po wybraniu odpowiedniego id pokoju
+ */
 class ShowReservation extends JPanel {
 
     private JLabel description;
@@ -30,7 +32,10 @@ class ShowReservation extends JPanel {
     static int room_id = -1;
 
 
-
+    /**
+     * Konstrukor panelu rezerwacji danego pokoju. Tworzy wszystkie elementy i przypisuje im domyślne wartości
+     * @param panel - panel, w którym zostanie wyświetlona zawartość
+     */
     public ShowReservation(JPanel menuPanel) {
 
         menuButton = new JButton("Powrót do menu");
@@ -107,14 +112,7 @@ class ShowReservation extends JPanel {
         }
         String [] roomID = new String[roomIdsArray.size()];
         roomIdsArray.toArray(roomID);
-/*
-        selectToDeleteDesc = new JLabel("Wybierz ID rezerwacji do usunięcia");
-        selectToDeleteDesc.setBounds(25, 450, 700, 20);
-        add(selectToDeleteDesc);
-        selectToDelete = new JComboBox(roomID);
-        selectToDelete.setBounds(25, 470, 200, 30);
-        add(selectToDelete);
-*/
+
         showRoomReservations = new JButton("Powrót do pokoi");
         showRoomReservations.setBounds(500, 465, 285, 35);
         add(showRoomReservations);
@@ -128,39 +126,7 @@ class ShowReservation extends JPanel {
                 cardLayout.next(contentPane);
             }
         });
-/*
-        deleteReservationButton = new JButton("Usuń rezerwacje");
-        deleteReservationButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                try {
-                    if(selectToDelete.getSelectedItem().equals("Nic") == false)
-                    {
-                        PreparedStatement deleteRes = MenuPanel.getDb().prepareStatement("DELETE FROM reservation where reservation_id=?");
-                        int idToDelete = Integer.parseInt(String.valueOf(selectToDelete.getSelectedItem()));
-                        deleteRes.setInt(1, idToDelete);
-                        deleteRes.executeUpdate();
-                        deleteRes.close();
-                        fillRoomsTable();
 
-                        selectToDelete.removeAllItems();
-                        PreparedStatement selectNr = MenuPanel.getDb().prepareStatement("SELECT reservation_id FROM reservation");
-                        ResultSet resultNr = selectNr.executeQuery();
-                        while(resultNr.next())
-                            selectToDelete.addItem(resultNr.getString("reservation_id"));
-                        resultNr.close();
-                        selectNr.close();
-                    }
-                } catch (Exception ser){
-                    System.out.println("Panel rezerwacji pokoi - blad usuwania z tabeli");
-                    ser.getMessage();
-                    ser.printStackTrace();
-                }
-            }
-        });
-        deleteReservationButton.setBounds(470, 510, 250, 60);
-        add(deleteReservationButton);
-*/
         try{
             int room_nr = 0;
             PreparedStatement selectNr = MenuPanel.getDb().prepareStatement("SELECT room_nr FROM room WHERE room_id="+room_id);
@@ -179,7 +145,9 @@ class ShowReservation extends JPanel {
     }
 
 
-
+    /**
+     * Uzupełnia tablice wyświetlająca wszystkie rezerwacje danego pokoju. Umożliwia sortowanie według określonej przez użytkownika kolejności
+     */
     public static void fillRoomsTable()
     {
         System.out.println("Room id to show " + room_id);

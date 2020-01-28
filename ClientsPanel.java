@@ -8,6 +8,9 @@ import java.sql.*;
 import java.util.Vector;
 import java.util.ArrayList;
 
+/**
+ * Panel pokazujący wszystkich klientów. Pozwala na modyfikacje danych klientów, dodanie nowych klientów lub wyświetlenie wszystkich rezerwacji danego klienta
+ */
 class ClientsPanel extends JPanel {
 
     private JLabel description;
@@ -46,7 +49,10 @@ class ClientsPanel extends JPanel {
     private JButton showClientReservations;
 
 
-
+    /**
+     * Konstrukor panelu klientów. Tworzy wszystkie elementy i przypisuje im domyślne wartości
+     * @param panel - panel, w którym zostanie wyświetlona zawartość
+     */
     public ClientsPanel(JPanel menuPanel) {
 
         menuButton = new JButton("Powrót do menu");
@@ -177,7 +183,7 @@ class ClientsPanel extends JPanel {
             selectid.close();
         } catch(Exception ser){
             System.out.println("Panel klienta - blad wczytywania tabeli ID");
-            ser.printStackTrace();
+//            ser.printStackTrace();
             return;
         }
         String [] clientIdsString = new String[clientIds.size()];
@@ -247,7 +253,7 @@ class ClientsPanel extends JPanel {
 
                 } catch (Exception ser){
                     System.out.println("Panel klienta - blad zapisywania danych do tabeli client");
-                    ser.printStackTrace();
+//                    ser.printStackTrace();
                 }
             }
         });
@@ -297,7 +303,7 @@ class ClientsPanel extends JPanel {
 
                 } catch (Exception ser){
                     System.out.println("Panel klienta - blad zapisywania danych do tabeli client");
-                    ser.printStackTrace();
+//                    ser.printStackTrace();
                 }
             }
         });
@@ -307,6 +313,9 @@ class ClientsPanel extends JPanel {
 
     }
 
+    /**
+     * Uzupełnia pola tekstowe i pole wyboru danymi klientów, którzy zostali wybrani do modyfikacji lub wyświetlenia rezerwacji
+     */
     void fillTextFields()
     {
         String cl_idS = String.valueOf(selectClientId.getSelectedItem());
@@ -346,13 +355,16 @@ class ClientsPanel extends JPanel {
                 select.close();
             } catch (Exception ser){
                 System.out.println("Panel klienta - blad wczytywania wierszy tabeli");
-                ser.printStackTrace();
+//                ser.printStackTrace();
             }
 
         }
 
     }
 
+    /**
+     * Uzupełnia tabele na górze panelu danymi klientów. Umożliwia sortowanie według określonej przez użytkownika kolejności
+     */
     void fillRoomsTable()
     {
         for (int i = model.getRowCount() - 1; i >= 0; i--) {
@@ -410,7 +422,7 @@ class ClientsPanel extends JPanel {
             select.close();
         } catch (Exception ser){
             System.out.println("Panel klienta - blad wczytywania wierszy tabeli");
-            ser.printStackTrace();
+//            ser.printStackTrace();
         }
 
     }

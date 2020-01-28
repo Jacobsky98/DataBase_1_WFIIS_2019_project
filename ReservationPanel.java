@@ -1,6 +1,5 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.transform.Result;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +9,9 @@ import java.util.Calendar;
 import java.util.Vector;
 import java.util.ArrayList;
 
+/**
+ * Panel umożliwiający wyszukanie dostępnych pokoi spełniających wymagania klienta. Następnie klient ma możliwość dokonania rezerwacji wybranego przez siebie pokoju i zapłatę.
+ */
 class ReservationPanel extends JPanel {
 
     private JLabel description;
@@ -47,6 +49,7 @@ class ReservationPanel extends JPanel {
     int paymentId = -1;
     String categoryId_name = "";
     int howManyPeople = -1;
+    int howManyDays = -1;
     double price = 0.0;
     String date_in = "";
     String date_out = "";
@@ -65,7 +68,10 @@ class ReservationPanel extends JPanel {
     private JLabel operationStatus = new JLabel();
 
 
-
+    /**
+     * Konstrukor panelu rezerwacji. Tworzy wszystkie elementy i przypisuje im domyślne wartości
+     * @param panel - panel, w którym zostanie wyświetlona zawartość
+     */
     public ReservationPanel(JPanel menuPanel) {
 
         menuButton = new JButton("Powrót do menu");
@@ -148,7 +154,7 @@ class ReservationPanel extends JPanel {
             select.close();
         } catch(Exception ser){
             System.out.println("Panel pokoi - blad wczytywania tabeli");
-            ser.printStackTrace();
+//            ser.printStackTrace();
         }
         String [] roomCat = new String[roomCategories.size()];
         roomCategories.toArray(roomCat);
@@ -216,19 +222,18 @@ class ReservationPanel extends JPanel {
                 foundRooms = true;
                 if(Integer.parseInt(String.valueOf(childrenField.getText())) > 0)
                     haveKids = true;
-                fillRoomsTable();
-                addClientsToComboBox();
-                if(room_ids.length>0) {
-                    selectClientDesc.setVisible(true);
-                    selectClient.setVisible(true);
-                    selectRoomNrDesc.setVisible(true);
-                    selectRoomNr.setVisible(true);
-                    placeReservation.setVisible(true);
-                    newClientButton.setVisible(true);
-                }
-                else
-                {
-                    operationStatus.setText("Brak miejsc w podanym terminie.");
+                if(fillRoomsTable()) {
+                    addClientsToComboBox();
+                    if (room_ids.length > 0) {
+                        selectClientDesc.setVisible(true);
+                        selectClient.setVisible(true);
+                        selectRoomNrDesc.setVisible(true);
+                        selectRoomNr.setVisible(true);
+                        placeReservation.setVisible(true);
+                        newClientButton.setVisible(true);
+                    } else {
+                        operationStatus.setText("Brak miejsc w podanym terminie.");
+                    }
                 }
             }
         });
@@ -305,8 +310,9 @@ class ReservationPanel extends JPanel {
                                 resultPr.close();
                                 selectPr.close();
                                 price = price * Integer.parseInt(String.valueOf(adultsField.getText())) + 0.75 * price * Integer.parseInt(String.valueOf(childrenField.getText()));
+                                price *= howManyDays;
                             } catch (Exception ser) {
-                                ser.printStackTrace();
+//                                ser.printStackTrace();
                             }
                             try {
 
@@ -334,7 +340,7 @@ class ReservationPanel extends JPanel {
                                 System.out.println("check_out " + checkOutField.getText());
                                 System.out.println("date_placed " + todayDate);
                             } catch (Exception ser) {
-                                ser.printStackTrace();
+//                                ser.printStackTrace();
                             }
                     }
 
@@ -359,7 +365,7 @@ class ReservationPanel extends JPanel {
                         payForReservation.setVisible(true);
                         MenuPanel.updateRoomsStatus();
                     } catch (Exception ser) {
-                        ser.printStackTrace();
+//                        ser.printStackTrace();
                     }
                 }
                 else{
@@ -408,7 +414,7 @@ class ReservationPanel extends JPanel {
 
                     } catch (Exception ser) {
                         System.out.println("Panel pokoi - blad zapisywania danych do tabeli room");
-                        ser.printStackTrace();
+//                        ser.printStackTrace();
                     }
                 }
                 else{
@@ -434,6 +440,9 @@ class ReservationPanel extends JPanel {
 
     }
 
+    /**
+     * Dodaje wszystkich klientów do elementu, w którym można wybrać gościa dla którego rezerwujemy pokój
+     */
     void addClientsToComboBox()
     {
         ResultSet result = null;
@@ -468,24 +477,44 @@ class ReservationPanel extends JPanel {
             //System.out.println("na koniec length " +  clientsTable.length);
         } catch (Exception ser){
             System.out.println("Panel rezerwacji - blad wczytywania wierszy tabeli client");
-            ser.printStackTrace();
+//            ser.printStackTrace();
         }
     }
 
-    void addRoomsToComboBox()
-    {
 
-    }
-
-    void fillRoomsTable()
+    /**
+     * Uzupełnia tabele z dostępnymi pokojami dla podanych wymagań, co do pokoju, zakresu dat i liczby osób
+     * @return true jeżeli jakieś pokoje są dostępne lub false jeżeli nie znaleziono żadnego dostępnego pokoju
+     */
+    boolean fillRoomsTable()
     {
+        howManyDays = -1;
         System.out.println("categoryId = " +categoryId+"\n"+date_in+"\n"+date_out+"\n"+howManyPeople+"\n"+haveKids);
 
         for (int i = model.getRowCount() - 1; i >= 0; i--) {
             model.removeRow(i);
         }
+
         ResultSet result = null;
         PreparedStatement select = null;
+
+        try {
+            select = MenuPanel.getDb().prepareStatement("select '" + date_out + "'::date - '" + date_in + "'::date as days");
+            result = select.executeQuery();
+            System.out.println("howManydays " + howManyDays);
+            while(result.next())
+                howManyDays = Integer.parseInt(String.valueOf(result.getInt("days")));
+            System.out.println("howManydays " + howManyDays);
+            result.close();
+            select.close();
+            if(howManyDays < 1){
+                operationStatus.setText("Nieprawidłowy przedział dat");
+                return false;
+            }
+        } catch (Exception ser){
+            System.out.println("Panel rezerwacji - zle podane daty");
+//            ser.printStackTrace();
+        }
 
         int chosen = sortBy.getSelectedIndex();
         try {
@@ -632,11 +661,13 @@ class ReservationPanel extends JPanel {
             {
                 room_ids[i] = roomIds.get(i);
             }
+            operationStatus.setText("Wybierz klienta i pokój, który chcesz zarezerwować");
+            return true;
         } catch (Exception ser){
             System.out.println("Panel rezerwacji - blad wczytywania wierszy tabeli");
-            ser.printStackTrace();
+//            ser.printStackTrace();
         }
-
+        return false;
     }
 
 

@@ -1,13 +1,14 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.transform.Result;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.Vector;
-import java.util.ArrayList;
 
+/**
+ * Panel zawierający statystyki wszystkich klientów i pokojów.
+ */
 class StatsPanel extends JPanel {
 
     private JButton menuButton;
@@ -17,16 +18,21 @@ class StatsPanel extends JPanel {
 
 
     private JTable roomsTable;
+    private JLabel roomsDesc;
     static private DefaultTableModel roomsModel = new DefaultTableModel();
     private JScrollPane roomsScrollPane;
 
     private JTable clientsTable;
+    private JLabel clientsDesc;
     static private DefaultTableModel clientsModel = new DefaultTableModel();
     private JScrollPane clientsScrollPane;
 
 
 
-
+    /**
+     * Konstrukor panelu statystyk. Tworzy wszystkie elementy i przypisuje im domyślne wartości
+     * @param panel - panel, w którym zostanie wyświetlona zawartość
+     */
     public StatsPanel(JPanel menuPanel) {
 
         menuButton = new JButton("Powrót do menu");
@@ -54,6 +60,10 @@ class StatsPanel extends JPanel {
         roomsTable = new JTable(roomsModel);
         roomsTable.setFont(new Font("Times New Roman", Font.PLAIN, 13));
 
+        roomsDesc = new JLabel("Najpopularniejsze pokoje", SwingConstants.CENTER);
+        roomsDesc.setBounds(15, 15, 770, 20);
+        add(roomsDesc);
+
         roomsScrollPane = new JScrollPane(roomsTable);
         roomsScrollPane.setBounds(15,50,770,225);
 
@@ -63,6 +73,9 @@ class StatsPanel extends JPanel {
         fillRoomsTable();
         add(roomsScrollPane, BorderLayout.CENTER);
 
+        clientsDesc = new JLabel("Najlepsi klienci", SwingConstants.CENTER);
+        clientsDesc.setBounds(15, 295, 770, 20);
+        add(clientsDesc);
 
         clientsTable = new JTable(clientsModel);
         clientsTable.setFont(new Font("Times New Roman", Font.PLAIN, 13));
@@ -76,6 +89,9 @@ class StatsPanel extends JPanel {
         add(clientsScrollPane, BorderLayout.CENTER);
     }
 
+    /**
+     * Uzupełnia tabele z danymi najpopularniejszych pokoi, sortując malejąco po ich liczbie rezerwacji
+     */
     static void fillRoomsTable()
     {
         for (int i = roomsModel.getRowCount() - 1; i >= 0; i--) {
@@ -106,7 +122,9 @@ class StatsPanel extends JPanel {
 
     }
 
-
+    /**
+     * Uzupełnia tabele z danymi najlepszych klientów, sortując malejąco po ich liczbie rezerwacji
+     */
     static void fillClientsTable()
     {
         for (int i = clientsModel.getRowCount() - 1; i >= 0; i--) {
